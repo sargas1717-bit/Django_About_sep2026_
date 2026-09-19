@@ -1,15 +1,26 @@
 # Home/About con Django
 
-Este proyecto demuestra un flujo básico de Django para manejar dos páginas estáticas: la página de inicio y la página “Acerca de”. El objetivo es mostrar cómo se estructura una aplicación pequeña, cómo se conectan las rutas con las vistas y cómo se renderizan las plantillas HTML.
+## Descripción del proyecto
 
-## Descripción general
+Este proyecto es una implementación básica pero funcional de una aplicación web con Django para manejar dos páginas estáticas: una página de inicio y una sección “Acerca de”. La finalidad principal es mostrar de forma clara el flujo estándar de Django para enlazar URLs, vistas y plantillas.
 
-La aplicación utiliza:
+La versión actual del proyecto se encuentra en un estado estable y funcional, con una estructura simple, navegación básica y dos templates HTML renderizados desde vistas basadas en clases.
 
-- Django como framework principal.
-- Una app llamada `pages` para manejar la lógica de las vistas.
-- Dos URLs: una para la página principal y otra para la sección de información.
-- Dos plantillas HTML: `home.html` y `about.html`.
+## Estado actual
+
+- Proyecto creado con Django.
+- App principal: `pages`.
+- Rutas configuradas para la home y la vista About.
+- Plantillas HTML creadas en la carpeta `templates`.
+- Navegación funcional entre Inicio y Acerca de.
+- Base de datos SQLite por defecto de Django.
+
+## Tecnologías utilizadas
+
+- Python
+- Django
+- SQLite
+- HTML
 
 ## Estructura del proyecto
 
@@ -18,32 +29,32 @@ home_about/
 ├── db.sqlite3
 ├── manage.py
 ├── requirements.txt
+├── README.md
 ├── django_base/
 │   ├── __init__.py
+│   ├── asgi.py
 │   ├── settings.py
 │   ├── urls.py
-│   ├── asgi.py
 │   └── wsgi.py
 ├── pages/
 │   ├── __init__.py
 │   ├── admin.py
 │   ├── apps.py
+│   ├── migrations/
 │   ├── models.py
 │   ├── tests.py
 │   ├── urls.py
-│   ├── views.py
-│   └── migrations/
-├── templates/
-│   ├── home.html
-│   └── about.html
-└── README.md
+│   └── views.py
+└── templates/
+    ├── about.html
+    └── home.html
 ```
 
-## Flujo del proceso Home/About
+## Flujo actual de funcionamiento
 
-### 1. Configuración de rutas principales
+### 1. Configuración principal de URLs
 
-En el archivo `django_base/urls.py` se incluye la configuración de rutas de la app `pages`:
+El proyecto principal incluye la app `pages` desde `django_base/urls.py`:
 
 ```python
 from django.contrib import admin
@@ -55,11 +66,11 @@ urlpatterns = [
 ]
 ```
 
-Esto indica que todas las rutas del proyecto serán manejadas por la aplicación `pages`.
+Esto permite que todas las rutas del sitio sean gestionadas por la aplicación `pages`.
 
-### 2. Definición de rutas internas
+### 2. Rutas internas de la app
 
-En `pages/urls.py` se registran las URL del sitio:
+En `pages/urls.py` se definen las rutas del sitio:
 
 ```python
 from django.urls import path
@@ -71,13 +82,13 @@ urlpatterns = [
 ]
 ```
 
-- La ruta raíz `/` apunta a la vista de inicio.
-- La ruta `/about/` apunta a la vista “Acerca de”.
-- El argumento `name='home'` y `name='about'` permite reutilizar estas rutas en los templates con `{% url 'home' %}` y `{% url 'about' %}`.
+- `/` → vista principal del home.
+- `/about/` → vista de la sección “Acerca de”.
+- Los nombres `home` y `about` se utilizan para generar enlaces con `{% url %}` en los templates.
 
-### 3. Vistas creadas con TemplateView
+### 3. Vistas con TemplateView
 
-En `pages/views.py` se usan vistas basadas en clases, específicamente `TemplateView`:
+En `pages/views.py` se usan vistas basadas en clases:
 
 ```python
 from django.views.generic import TemplateView
@@ -89,16 +100,13 @@ class AboutView(TemplateView):
     template_name = 'about.html'
 ```
 
-`TemplateView` es ideal para páginas estáticas porque solo renderiza una plantilla HTML sin lógica compleja.
+Este patrón es ideal para páginas estáticas porque solo renderiza una plantilla sin lógica compleja de negocio.
 
 ### 4. Plantillas HTML
 
-Las plantillas están en la carpeta `templates/`:
+Las páginas se renderizan desde la carpeta `templates/`.
 
-- `home.html`: muestra la pantalla principal.
-- `about.html`: muestra la sección de información.
-
-Ejemplo de `home.html`:
+#### home.html
 
 ```html
 <!DOCTYPE html>
@@ -109,7 +117,7 @@ Ejemplo de `home.html`:
 </head>
 <body>
     <nav>
-        <a href="{% url 'home' %}">Inicio</a> |
+        <a href="{% url 'home' %}">Inicio</a> | 
         <a href="{% url 'about' %}">Acerca de</a>
     </nav>
     <h1>Página de Inicio</h1>
@@ -118,7 +126,7 @@ Ejemplo de `home.html`:
 </html>
 ```
 
-Ejemplo de `about.html`:
+#### about.html
 
 ```html
 <!DOCTYPE html>
@@ -129,7 +137,7 @@ Ejemplo de `about.html`:
 </head>
 <body>
     <nav>
-        <a href="{% url 'home' %}">Inicio</a> |
+        <a href="{% url 'home' %}">Inicio</a> | 
         <a href="{% url 'about' %}">Acerca de</a>
     </nav>
     <h1>Acerca de Nosotros</h1>
@@ -138,11 +146,11 @@ Ejemplo de `about.html`:
 </html>
 ```
 
-## Requisitos
+## Requisitos previos
 
-- Python instalado
-- Django instalado en el entorno virtual
-- Git para control de versiones
+- Python 3.x instalado.
+- Django disponible en el entorno virtual.
+- Git para clonar y versionar el proyecto.
 
 ## Instalación
 
@@ -161,13 +169,13 @@ python -m venv venv
 
 3. Activa el entorno virtual:
 
-- En Windows:
+- Windows:
 
 ```bash
 venv\Scripts\activate
 ```
 
-- En macOS/Linux:
+- macOS/Linux:
 
 ```bash
 source venv/bin/activate
@@ -181,7 +189,7 @@ pip install -r requirements.txt
 
 ## Ejecución del proyecto
 
-1. Aplica migraciones iniciales:
+1. Ejecuta las migraciones iniciales:
 
 ```bash
 python manage.py migrate
@@ -200,28 +208,29 @@ python manage.py runserver
 
 ## Resultado esperado
 
-- En la ruta raíz se muestra la página de inicio.
-- En la ruta `/about/` se muestra la página “Acerca de”.
-- El navegador puede navegar entre ambos enlaces sin necesidad de lógica adicional.
+- La ruta raíz muestra la vista de inicio.
+- La ruta `/about/` muestra la vista de Acerca de.
+- La navegación entre ambas páginas funciona correctamente.
 
-## Conceptos aprendidos
+## Conceptos aplicados
 
-Este proyecto enseña de forma clara la base del patrón MVC/MVT de Django:
+Este proyecto demuestra la base del patrón MVT de Django:
 
-- Modelo: no se usa en este caso porque son páginas estáticas.
+- Modelo: no se usa por ser una app de contenido estático.
 - Vista: `HomeView` y `AboutView`.
 - Template: `home.html` y `about.html`.
-- URLConf: la conexión entre URLs y vistas.
+- URLConf: conexión entre rutas y vistas.
 
-## Siguientes pasos
+## Próximos pasos recomendados
 
-Para mejorar este proyecto, puedes seguir con:
+Para continuar con el proyecto, se pueden implementar:
 
-- Agregar estilos CSS para una mejor presentación.
-- Crear contenido dinámico con modelos y bases de datos.
-- Separar la navegación en un layout reutilizable.
-- Añadir más secciones como servicios, contacto o blog.
+- estilos CSS personalizados
+- archivos base y layout reutilizable
+- ampliación del contenido con más secciones
+- uso de modelos y datos dinámicos
+- formularios y autenticación
 
 ## Conclusión
 
-La implementación de Home/About en Django es una excelente base para comprender cómo funcionan las rutas, las vistas y las plantillas. Con este patrón, se puede expandir rápidamente hacia aplicaciones más complejas manteniendo una estructura clara y escalable.
+La versión actual del proyecto presenta una base sólida para entender el funcionamiento de Django en una aplicación sencilla. El flujo de home/about ilustra de manera práctica cómo se conectan las rutas, vistas y templates en el patrón MVT, siendo una base ideal para proyectos más complejos.
